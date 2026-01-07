@@ -1,6 +1,7 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -113,9 +114,9 @@ export default function Signup() {
 
         <p className='text-center text-sm'>
           Already have an account?{' '}
-          <a href='/login' className='text-blue-500 underline'>
+          <Link href='/login' className='text-blue-500 underline'>
             Login
-          </a>
+          </Link>
         </p>
       </form>
     </div>
