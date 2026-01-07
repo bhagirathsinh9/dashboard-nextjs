@@ -1,15 +1,19 @@
-import NextAuth from 'next-auth'
-import Credentials from 'next-auth/providers/credentials'
-import { users } from '@/lib/memoryStore'
+import NextAuth from "next-auth"
+import Credentials from "next-auth/providers/credentials"
+import { users } from "@/lib/memoryStore"
 
 export const authOptions = {
   providers: [
     Credentials({
       async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null
+        }
+
         const user = users.find(
           (u) =>
             u.email === credentials.email &&
-            u.password === credentials.password,
+            u.password === credentials.password
         )
 
         if (!user) return null
@@ -24,11 +28,17 @@ export const authOptions = {
     }),
   ],
 
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: "jwt",
+  },
+
+  secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = user.role
+      if (user) {
+        token.role = user.role
+      }
       return token
     },
     async session({ session, token }) {
@@ -38,7 +48,7 @@ export const authOptions = {
   },
 
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
 }
 
