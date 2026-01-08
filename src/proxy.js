@@ -10,7 +10,14 @@ export async function proxy(req) {
   }
 
   const role = token.role
+  
+  if (pathname === "/") {
+    return NextResponse.redirect(
+      new URL(role === "admin" ? "/admin" : "/user", req.url)
+    )
+  }
 
+  
   if (pathname === "/dashboard") {
     return NextResponse.redirect(
       new URL(role === "admin" ? "/admin" : "/user", req.url)
@@ -29,5 +36,5 @@ export async function proxy(req) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/admin/:path*", "/user/:path*"],
+  matcher: [ "/","/dashboard", "/admin/:path*", "/user/:path*"],
 }
